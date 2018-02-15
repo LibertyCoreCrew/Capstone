@@ -18,7 +18,7 @@ module Liberty
       config.after_initialize do
         Thread.new do
           begin
-            manager = Manager.new
+            manager = DriveManager::Manager.new
             initialize_data(manager)
           rescue StandardError => e
             puts "Error during processing: #{e}"
