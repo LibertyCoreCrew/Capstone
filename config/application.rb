@@ -8,7 +8,7 @@ require_relative './drivemanager/manager.rb'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module Liberty
+module DriveManager
   # Starts the back-end process thread
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -18,24 +18,16 @@ module Liberty
       config.after_initialize do
         Thread.new do
           begin
-            manager = DriveManager::Manager.new
-            initialize_data(manager)
+            # manager = Manager.new
+            # DriveAPI.test_method(manager.service)
           rescue StandardError => e
             puts "Error during processing: #{e}"
             puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
             puts e.class
             raise e
           end
-          # We will do back-end stuff here.
         end
       end
-    end
-
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
-    def initialize_data(manager)
-      
     end
   end
 end
