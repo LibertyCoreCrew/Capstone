@@ -1,9 +1,23 @@
 Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
-get 'home'
+  
+get 'newuser' => 'newuser#new'
+post 'newuser' => 'newuser#create'
+resources :newuser
 
-root 'home'
+get "login" => "login#index"
+post 'login' => "login#create"
+
+get 'login/:name' => 'login#create'
+get 'access' => 'access#index'
+get 'destroy' => 'access#destroy'
+get 'articles' => 'articles#index'
+get 'welcome' => 'welcome#index'
+
+root 'login#index'
+end
+
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
@@ -55,4 +69,3 @@ root 'home'
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-end

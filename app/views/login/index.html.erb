@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+
+<%= simple_form_for :user do |f| %>
+    <%= f.input :name %>
+    <%= f.input :password %>
+    <% if flash[:error] %>
+        <div class="error"><%= flash[:error] %></div>
+    <% end %>
+    <%= f.submit 'Login' %>
+    <% end %>
+    
+    
+    
+</html>
