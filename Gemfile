@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5'
-
+gem 'ruby', '2.3.4'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -25,6 +25,7 @@ gem 'simple_form'
 gem 'rails-footnotes', '>= 3.7.9', :group => :development
 gem 'bootstrap-sass', '~> 2.3.1.0'
 gem 'pg', ' ~> 0.18'
+
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
