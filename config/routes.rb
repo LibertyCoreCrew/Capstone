@@ -10,7 +10,10 @@ get "login" => "login#index"
 post 'login' => "login#create"
 
 get 'login/:name' => 'login#create'
+
 get 'access' => 'access#index'
+resources :access
+
 get 'destroy' => 'access#destroy'
 get 'articles' => 'articles#index'
 get 'welcome' => 'welcome#index'

@@ -1,6 +1,4 @@
 class NewuserController < ApplicationController
-
-
     
     def new
         @user = User.new
@@ -9,11 +7,9 @@ class NewuserController < ApplicationController
     def create          
         @user = User.new(user_params)
         if @user.save
-            puts "you suck"
-            #cookies.sign[:user_id] = @user.name  
+            cookies.signed[:user_id] = @user.name  
             redirect_to root_url
         else
-            puts "you suck more"
             render :new
 
         end

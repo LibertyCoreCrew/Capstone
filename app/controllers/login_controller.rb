@@ -5,10 +5,10 @@ class LoginController < ApplicationController
     end
     
     def create
-        @user = User.find_by("name = ?", account_params[:name])
+        user = User.find_by("name = ?", user_params[:name])
         
-        if @user.present? && @user.authenticate(account_params[:password])
-            cookies.permanent.signed[:user_id] = @user.name
+        if user.present? && user.authenticate(user_params[:password])
+            cookies.permanent.signed[:user_id] = user.name
             redirect_to access_url
         else
             flash.now[:error] = "Invalid name/pw combination"
@@ -28,7 +28,7 @@ class LoginController < ApplicationController
     end
 =end
     
-    def account_params
+    def user_params
         params.require(:user).permit(:name, :password)
     end
 end
