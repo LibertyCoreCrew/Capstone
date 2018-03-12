@@ -1,8 +1,8 @@
 class AccessController < ApplicationController
-    before_action :authenticate_user, only: [:index, :destroy]
+    before_action :authenticate_user
     
     def index
-        #user_display = cookies.signed[:user_id]
+        @user = @current_user
     end
    
    def destroy
@@ -10,5 +10,5 @@ class AccessController < ApplicationController
         @current_user = nil
         redirect_to root_url
    end
-    
+
 end
