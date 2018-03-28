@@ -7,4 +7,7 @@ class PagesController < ApplicationController
 
   def admin
   end
+  
+  def dashboard
+  end
 end
