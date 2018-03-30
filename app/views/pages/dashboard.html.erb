@@ -5,17 +5,42 @@
   </head>
     
   <body>
-    <div class="jumbotron" id="jumbotract">
-      <h3 style="color:white">Agent Name</h3>
-      <div class="jumbotron" id="jumb-tract">
-        <h1>Tracts</h1>
-        <ul class="tract-list" id="cust-tracts">
-          <li><a class="tract-link" href="index.html">Tract 1<span class="sr-only">(current)</span></a></li>
-          <li><a class="tract-link" href="index.html">Tract 2<span class="sr-only">(current)</span></a></li>
-          <li><a class="tract-link" href="index.html">Tract 3<span class="sr-only">(current)</span></a></li>
-      </div>
-    </div>
 
+    <div class="card-deck mx-auto" style="max-width: 90rem;">
+
+      <div class="card m-3 bigcard bg-light">
+        <div class="card-body">
+
+          <h2 class="card-title">Tracts</h2>
+
+          <% 6.times do %>
+            <div class="card mb-3 littlecard">
+              <div class="card-body">
+                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+              </div>
+            </div>
+          <% end %>
+
+        </div>
+      </div>
+
+      <div class="card m-3 bigcard bg-light">
+        <div class="card-body">
+
+          <h2 class="card-title">Projects</h2>
+
+          <% 3.times do %>
+            <div class="card mb-3 littlecard">
+              <div class="card-body">
+                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+              </div>
+            </div>
+          <% end %>
+
+        </div>
+      </div>
+
+    </div>
 
   </body>
 </html>

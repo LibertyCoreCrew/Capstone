@@ -1,5 +1,7 @@
-#jumbotract{
-  background-color: #0e2b53;
-	width: 300px;
-	margin:0 auto;
+.bigcard {
+  max-width: 45rem;
+}
+
+.littlecard {
+  max-width: 45rem;
 }
