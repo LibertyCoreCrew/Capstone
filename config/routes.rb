@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get '/login' => 'pages#login'
 
   get '/index' => 'pages#index'
+  
+  get '/documents' => 'pages#documents'
 
   get '/admin' => 'pages#admin'
 
