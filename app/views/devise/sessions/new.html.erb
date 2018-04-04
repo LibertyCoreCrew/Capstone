@@ -1,26 +1,80 @@
-<h2>Log in</h2>
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Liberty Core | Log In</title>
+  </head>
+    
+  <body>
+  <% if user_signed_in? %>
+    <% redirect_to dashboard_url %>
+  <% end %>
+    <div class="container py-5">
+      <div class="row">
+          <div class="col-md-12">
+              <div class="row">
+                  <div class="col-md-6 mx-auto">
+
+                      <!-- form card login -->
+                      <div class="card rounded-0">
+                          <div class="card-header">
+                              <h3 class="mb-0">Login</h3>
+                          </div>
+                          <div class="card-body">
+<!--<h2>Log in</h2>-->
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
+  <div class="form-group">
     <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", :class =>"form-control form-control-lg rounded-0" %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
+    <%= f.password_field :password, autocomplete: "off", :class =>"form-control form-control-lg rounded-0" %>
   </div>
 
   <% if devise_mapping.rememberable? -%>
-    <div class="field">
+    <div class="form-group">
       <%= f.check_box :remember_me %>
       <%= f.label :remember_me %>
     </div>
   <% end -%>
 
   <div class="actions">
-    <%= f.submit "Log in" %>
+    <%= f.submit "Log in", :class => "btn btn-success btn-lg float-right" %>
   </div>
 <% end %>
 
 <%= render "devise/shared/links" %>
+                          </div>
+                          <!--/card-block-->
+                      </div>
+                      <!-- /form card login -->
+
+                  </div>
+
+
+              </div>
+              <!--/row-->
+
+          </div>
+          <!--/col-->
+      </div>
+      <!--/row-->
+    </div>
+    <!--/container-->
+
+    <script>
+        $("#btnLogin").click(function(event) {
+
+        //Fetch form to apply custom Bootstrap validation
+        var form = $("#formLogin")
+
+        if (form[0].checkValidity() === false) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        
+        form.addClass('was-validated');
+      });
+    </script>

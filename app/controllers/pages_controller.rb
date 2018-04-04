@@ -1,6 +1,8 @@
 class PagesController < ApplicationController
 	include DriveManager
+	before_action :authenticate_user!, except: [:login]
   def login
+      redirect_to new_user_session_path
   end
 
   def index
