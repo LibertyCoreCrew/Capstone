@@ -10,12 +10,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180330220109) do
+ActiveRecord::Schema.define(version: 20180404014914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "keydates", force: :cascade do |t|
+    t.integer "project_id"
+    t.integer "tract_id"
+    t.string "name"
+    t.date "date"
+    t.text "comments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tracts", force: :cascade do |t|
+    t.integer "project_id"
+    t.integer "user_id"
+    t.string "owner_name"
+    t.string "parcel_address"
+    t.string "owner_phone"
+    t.string "owner_email"
+    t.float "payment_amount"
+    t.text "remarks"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
+    t.string "name"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
