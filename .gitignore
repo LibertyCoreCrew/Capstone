@@ -16,5 +16,8 @@
 /node_modules
 /yarn-error.log
 /config/client_secret.json
+/Quick
+/app/controllers/client_secret.json
+/app/controllers/secrets.yml
 
 .byebug_history
