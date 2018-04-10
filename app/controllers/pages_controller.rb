@@ -3,18 +3,14 @@ class PagesController < ApplicationController
     require 'google/apis/drive_v2'
     require 'googleauth'
     require 'googleauth/stores/file_token_store'
-
+	require_relative 'manager'
     require 'fileutils'
-    OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'
-    APPLICATION_NAME = 'Drive API Ruby Quickstart'
-    CLIENT_SECRETS_PATH = Dir.pwd + '/app/controllers/client_secret.json'
-    CREDENTIALS_PATH = File.join(Dir.home, '.credentials', "drive-ruby-quickstart.yaml")
-    SCOPE = Google::Apis::DriveV2::AUTH_DRIVE_METADATA_READONLY
+   
     #puts Dir.pwd + '/client_secret.json'
     #puts CLIENT_SECRETS_PATH
-	#before_action :authenticate_user!, except: [:login]
+	before_action :authenticate_user!, except: [:login]
   def login
-      #redirect_to new_user_session_path
+      redirect_to new_user_session_path
   end
 
   def index
@@ -57,14 +53,15 @@ class PagesController < ApplicationController
       credentials
     end
     # Initialize the API
-    service = Google::Apis::DriveV2::DriveService.new
-   
-    service.client_options.application_name = APPLICATION_NAME
-    service.authorization = authorize
-    @service = service.list_files()
+    #service = Google::Apis::DriveV2::DriveService.new
+	service = DriveManager::Manager.new
+	@result = service.list_files(page_size: 10, fields: 'nextPageToken, files(id, name)')
+    #service.client_options.application_name = APPLICATION_NAME
+    #service.authorization = authorize
+    #@service = service.list_files()
     
  end
   
 end
-# b = PagesController.new
+
 # r = b.documents

@@ -60,9 +60,11 @@
     
     
     <pre>
-	<% @service.items.each do |file| %>
-    <div>  <%=" #{file.title} (#{file.id})" %></div>
-  <% end %>
+
+	<%=       @result.files.each do |file|
+        puts "File name: #{file.name}"
+		end
+      %>
 
 	</pre>
   </body>
