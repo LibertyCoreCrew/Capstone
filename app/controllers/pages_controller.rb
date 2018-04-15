@@ -13,6 +13,7 @@ class PagesController < ApplicationController
     #puts Dir.pwd + '/client_secret.json'
     #puts CLIENT_SECRETS_PATH
 	#before_action :authenticate_user!, except: [:login]
+	
   def login
       #redirect_to new_user_session_path
   end
@@ -24,6 +25,12 @@ class PagesController < ApplicationController
   end
   
   def dashboard
+    # This line below will be changed to load the current session's user
+    @user = current_user                # Assign the agent whose tracts and projects will be displayed
+    @user_tracts = @user.tracts         # The array whose contents are the agent's assigned tracts
+    
+    # The collection of projects the user works in, through their assigned tracts
+    @user_projects = Project.find( @user.tracts.all.select( :project_id ).distinct.pluck( :project_id ) )
   end
   
   def documents
@@ -63,7 +70,7 @@ class PagesController < ApplicationController
     service.authorization = authorize
     @service = service.list_files()
     
- end
+  end
   
 end
 # b = PagesController.new

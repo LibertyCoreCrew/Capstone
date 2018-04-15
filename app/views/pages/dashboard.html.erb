@@ -11,12 +11,12 @@
       <div class="card m-3 bigcard bg-light">
         <div class="card-body">
 
-          <h2 class="card-title">Tracts</h2>
+          <h2 class="card-title"><%= @user.name %>'s Tracts</h2>
 
-          <% 6.times do %>
+          <% @user_tracts.each do |tract| %>
             <div class="card mb-3 littlecard">
               <div class="card-body">
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                <p class="card-text"><%= tract.parcel_address %></br><%= tract.owner_name %></p>
               </div>
             </div>
           <% end %>
@@ -27,12 +27,12 @@
       <div class="card m-3 bigcard bg-light">
         <div class="card-body">
 
-          <h2 class="card-title">Projects</h2>
+          <h2 class="card-title"><%= @user.name %>'s Projects</h2>
 
-          <% 3.times do %>
+          <% @user_projects.each do |project| %>
             <div class="card mb-3 littlecard">
               <div class="card-body">
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                <p class="card-text"><%= project.name %></p>
               </div>
             </div>
           <% end %>
