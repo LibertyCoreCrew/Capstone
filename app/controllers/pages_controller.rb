@@ -69,8 +69,8 @@ class PagesController < ApplicationController
     end
     # Initialize the API
     #service = Google::Apis::DriveV2::DriveService.new
-	service = DriveManager::Manager.new
-	@result = service.list_files(page_size: 10, fields: 'nextPageToken, files(id, name)')
+	DriveManager::Manager.new.initialize
+	@result = DriveManager::Manager.service.list_files(page_size: 10, fields: 'nextPageToken, files(id, name)')
     #service.client_options.application_name = APPLICATION_NAME
     #service.authorization = authorize
     #@service = service.list_files()
