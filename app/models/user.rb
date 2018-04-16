@@ -1,7 +1,6 @@
 class User < ApplicationRecord
   has_many :tracts
   
-  
   rails_admin do
     configure :tracts do
         label 'Tracts that this agent is working'

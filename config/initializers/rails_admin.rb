@@ -3,10 +3,14 @@ RailsAdmin.config do |config|
   ### Popular gems integration
 
   ## == Devise ==
-  # config.authenticate_with do
-  #   warden.authenticate! scope: :user
-  # end
-  # config.current_user_method(&:current_user)
+  config.authenticate_with do
+    warden.authenticate! scope: :user
+  end
+    config.current_user_method(&:current_user)
+    
+  config.authorize_with do
+    redirect_to main_app.root_path unless current_user.admin?
+  end
 
   ## == Cancan ==
   # config.authorize_with :cancan
@@ -25,6 +29,18 @@ RailsAdmin.config do |config|
 
 
   config.model 'User' do
+    list do
+      include_all_fields
+    end
+    edit do
+      include_all_fields
+      exclude_fields :reset_password_token, :reset_password_sent_at,
+      :remember_created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at,
+      :current_sign_in_ip, :last_sign_in_ip
+    end
+  end
+  
+  config.model 'Admin' do
     list do
       include_all_fields
     end

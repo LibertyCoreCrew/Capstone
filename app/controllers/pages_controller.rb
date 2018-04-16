@@ -8,7 +8,9 @@ class PagesController < ApplicationController
    
     #puts Dir.pwd + '/client_secret.json'
     #puts CLIENT_SECRETS_PATH
+
 	before_action :authenticate_user!, except: [:login]
+
   def login
       redirect_to new_user_session_path
   end
@@ -20,6 +22,19 @@ class PagesController < ApplicationController
   end
   
   def dashboard
+    # Loads the current user into the @user variable
+    @user = current_user                # Assign the agent whose tracts and projects will be displayed
+    
+    if @user.admin?
+      @user_tracts = Tract.all
+      @user_projects = Project.all
+      @display_name = ''
+    else
+      @user_tracts = @user.tracts         # The array whose contents are the agent's assigned tracts
+      # The collection of projects the user works in, through their assigned tracts
+      @user_projects = Project.find( @user.tracts.all.select( :project_id ).distinct.pluck( :project_id ) )
+      @display_name = 'Your '
+    end
   end
   
   def documents
@@ -60,7 +75,7 @@ class PagesController < ApplicationController
     #service.authorization = authorize
     #@service = service.list_files()
     
- end
+  end
   
 end
 
