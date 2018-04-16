@@ -25,12 +25,19 @@ class PagesController < ApplicationController
   end
   
   def dashboard
-    # This line below will be changed to load the current session's user
+    # Loads the current user into the @user variable
     @user = current_user                # Assign the agent whose tracts and projects will be displayed
-    @user_tracts = @user.tracts         # The array whose contents are the agent's assigned tracts
     
-    # The collection of projects the user works in, through their assigned tracts
-    @user_projects = Project.find( @user.tracts.all.select( :project_id ).distinct.pluck( :project_id ) )
+    if @user.admin?
+      @user_tracts = Tract.all
+      @user_projects = Project.all
+      @display_name = ''
+    else
+      @user_tracts = @user.tracts         # The array whose contents are the agent's assigned tracts
+      # The collection of projects the user works in, through their assigned tracts
+      @user_projects = Project.find( @user.tracts.all.select( :project_id ).distinct.pluck( :project_id ) )
+      @display_name = 'Your '
+    end
   end
   
   def documents

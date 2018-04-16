@@ -11,7 +11,7 @@
       <div class="card m-3 bigcard bg-light">
         <div class="card-body">
 
-          <h2 class="card-title"><%= @user.name %>'s Tracts</h2>
+          <h2 class="card-title"><%= @display_name %>Tracts</h2>
 
           <% @user_tracts.each do |tract| %>
             <div class="card mb-3 littlecard">
@@ -27,7 +27,7 @@
       <div class="card m-3 bigcard bg-light">
         <div class="card-body">
 
-          <h2 class="card-title"><%= @user.name %>'s Projects</h2>
+          <h2 class="card-title"><%= @display_name %>Projects</h2>
 
           <% @user_projects.each do |project| %>
             <div class="card mb-3 littlecard">
