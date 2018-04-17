@@ -1,30 +1,34 @@
-class PagesController < ApplicationController
-	#include DriveManager
-    require 'google/apis/drive_v2'
-    require 'googleauth'
-    require 'googleauth/stores/file_token_store'
-	require_relative 'manager'
-    require 'fileutils'
-   
-    #puts Dir.pwd + '/client_secret.json'
-    #puts CLIENT_SECRETS_PATH
+require 'google/apis/drive_v2'
+require 'googleauth'
+require 'googleauth/stores/file_token_store'
+require 'manager'
+require 'fileutils'
 
-	before_action :authenticate_user!, except: [:login]
+# Controller for all pages
+class PagesController < ApplicationController
+
+  include DriveManager
+  # puts Dir.pwd + '/client_secret.json'
+  # puts CLIENT_SECRETS_PATH
+
+  before_action :authenticate_user!, except: [:login]
 
   def login
-      redirect_to new_user_session_path
+    redirect_to new_user_session_path
   end
 
   def index
+
   end
 
   def admin
+
   end
-  
+
   def dashboard
     # Loads the current user into the @user variable
     @user = current_user                # Assign the agent whose tracts and projects will be displayed
-    
+
     if @user.admin?
       @user_tracts = Tract.all
       @user_projects = Project.all
@@ -36,7 +40,7 @@ class PagesController < ApplicationController
       @display_name = 'Your '
     end
   end
-  
+
   def documents
 
     ##
@@ -69,8 +73,8 @@ class PagesController < ApplicationController
     end
     # Initialize the API
     #service = Google::Apis::DriveV2::DriveService.new
-	DriveManager::Manager.new.initialize
-	@result = DriveManager::Manager.service.list_files(page_size: 10, fields: 'nextPageToken, files(id, name)')
+  	Manager.new.initialize
+	  @result = Manager.service.list_files(page_size: 10, fields: 'nextPageToken, files(id, name)')
     #service.client_options.application_name = APPLICATION_NAME
     #service.authorization = authorize
     #@service = service.list_files()
