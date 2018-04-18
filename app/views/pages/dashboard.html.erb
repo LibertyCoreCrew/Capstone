@@ -19,10 +19,7 @@
                 <p class="card-text">
                   <%= tract.parcel_address %></br>
                   <%= tract.owner_name %></br>
-                  <%= tract.owner_email %></br>
-                  <%= tract.owner_phone %></br>
                   <%= link_to "Details", tract %>
-                  <%= "$#{sprintf('%.2f', tract.payment_amount).sub(/(\d+)(\d\d\d)/,'\1,\2')}" %>
                 </p>
               </div>
             </div>
