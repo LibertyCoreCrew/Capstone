@@ -31,12 +31,12 @@ class PagesController < ApplicationController
 
     if @user.admin?
       @user_tracts = Tract.all
-      @user_projects = Project.all
+      @user_projects = Project.all.pluck( :id )
       @display_name = ''
     else
       @user_tracts = @user.tracts         # The array whose contents are the agent's assigned tracts
       # The collection of projects the user works in, through their assigned tracts
-      @user_projects = Project.find( @user.tracts.all.select( :project_id ).distinct.pluck( :project_id ) )
+      @user_projects = @user.tracts.all.select( :project_id ).distinct.pluck( :project_id )
       @display_name = 'Your '
     end
   end
