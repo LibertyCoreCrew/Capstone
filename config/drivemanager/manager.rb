@@ -4,14 +4,10 @@ require 'googleauth'
 module DriveManager
   # Class for interacting with the Google Drive API
   class Manager
-    class << self
-      attr_accessor :service
-    end
+    attr_accessor :service
 
-    # Create and authenticate the Google Drive service object.
     def initialize
-      self.class.service = Google::Apis::DriveV3::DriveService.new
-      authorize_service(self.class.service)
+      @service = authorize_service(Google::Apis::DriveV3::DriveService.new)
     end
 
     private
@@ -41,6 +37,7 @@ module DriveManager
           scope: scopes,
           json_key_io: json_io
         )
+        return service
       end
     end
 

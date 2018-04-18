@@ -39,6 +39,7 @@ class PagesController < ApplicationController
       @user_projects = @user.tracts.all.select( :project_id ).distinct.pluck( :project_id )
       @display_name = 'Your '
     end
+    
   end
 
   def documents
@@ -73,8 +74,9 @@ class PagesController < ApplicationController
     end
     # Initialize the API
     #service = Google::Apis::DriveV2::DriveService.new
-  	Manager.new.initialize
-	  @result = Manager.service.list_files(page_size: 10, fields: 'nextPageToken, files(id, name)')
+  	man = Manager.new
+    @result = man.service.list_files(page_size: 10, fields: 'nextPageToken, files(id, name)')
+    puts @result
     #service.client_options.application_name = APPLICATION_NAME
     #service.authorization = authorize
     #@service = service.list_files()

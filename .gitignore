@@ -19,5 +19,6 @@
 /Quick
 /app/controllers/client_secret.json
 /app/controllers/secrets.yml
+/client_secret.json
 
 .byebug_history
