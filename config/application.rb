@@ -18,11 +18,11 @@ module DriveManager
 
     if defined?(Rails::Server)
       config.after_initialize do
+        Thread.abort_on_exception = true
         Thread.new do
           begin
             Manager.create_client_secret_file
-            # manager = Manager.new
-            # DriveAPI.test_method(manager.service)
+            DriveAPI.nlp_file_monitoring
           rescue StandardError => e
             puts "Error during processing: #{e}"
             puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
