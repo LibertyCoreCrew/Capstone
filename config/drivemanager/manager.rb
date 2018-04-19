@@ -10,8 +10,6 @@ module DriveManager
       @service = authorize_service(Google::Apis::DriveV3::DriveService.new)
     end
 
-    private
-
     # Pull private key ID and private key from environment variables.
     PROJECT_ID = 'lc-docs-development'.freeze
     KEY_FILE = 'client_secret.json'.freeze
@@ -30,7 +28,6 @@ module DriveManager
 
     # Use the generated client_secret.json file to authenticate the Google Drive service object.
     def authorize_service(service)
-      create_client_secret_file
       scopes = ['https://www.googleapis.com/auth/drive']
       File.open('client_secret.json'.to_s, 'r') do |json_io|
         service.authorization = Google::Auth::DefaultCredentials.make_creds(
@@ -42,7 +39,7 @@ module DriveManager
     end
 
     # Create the client_secret file using the private key information.
-    def create_client_secret_file
+    def self.create_client_secret_file
       File.exist?(KEY_FILE.to_s) && File.delete(KEY_FILE.to_s)
       File.open(KEY_FILE.to_s, 'w') do |f|
         f.write(CLIENT_SECRET.to_json.gsub('\\\\', '\\'))

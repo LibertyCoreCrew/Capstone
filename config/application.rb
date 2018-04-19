@@ -20,6 +20,7 @@ module DriveManager
       config.after_initialize do
         Thread.new do
           begin
+            Manager.create_client_secret_file
             # manager = Manager.new
             # DriveAPI.test_method(manager.service)
           rescue StandardError => e

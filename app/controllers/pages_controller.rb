@@ -17,13 +17,9 @@ class PagesController < ApplicationController
     redirect_to new_user_session_path
   end
 
-  def index
+  def index; end
 
-  end
-
-  def admin
-
-  end
+  def admin; end
 
   def dashboard
     # Loads the current user into the @user variable
@@ -39,11 +35,9 @@ class PagesController < ApplicationController
       @user_projects = @user.tracts.all.select( :project_id ).distinct.pluck( :project_id )
       @display_name = 'Your '
     end
-    
   end
 
   def documents
-
     ##
     # Ensure valid credentials, either by restoring from the saved credentials
     # files or intitiating an OAuth2 authorization. If authorization is required,
@@ -51,7 +45,6 @@ class PagesController < ApplicationController
     #
     # @return [Google::Auth::UserRefreshCredentials] OAuth2 credentials
     def authorize
-     
       FileUtils.mkdir_p(File.dirname(CREDENTIALS_PATH))
 
       client_id = Google::Auth::ClientId.from_file(CLIENT_SECRETS_PATH)
@@ -72,17 +65,12 @@ class PagesController < ApplicationController
       end
       credentials
     end
+
     # Initialize the API
-    #service = Google::Apis::DriveV2::DriveService.new
-  	man = Manager.new
+    man = Manager.new
     @result = man.service.list_files(page_size: 10, fields: 'nextPageToken, files(id, name)')
     puts @result
-    #service.client_options.application_name = APPLICATION_NAME
-    #service.authorization = authorize
-    #@service = service.list_files()
-    
   end
-  
 end
 
 # r = b.documents
