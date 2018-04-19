@@ -67,8 +67,9 @@ class PagesController < ApplicationController
     end
 
     # Initialize the API
-    man = Manager.new
-    @result = man.service.list_files(page_size: 10, fields: 'nextPageToken, files(id, name)')
+    drive = Manager.new.service
+    Manager.sleep_until_turn
+    result = drive.list_files(page_size: 10, fields: 'nextPageToken, files(id, name)')
     puts @result
   end
 end

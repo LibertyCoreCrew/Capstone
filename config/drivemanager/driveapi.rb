@@ -31,7 +31,9 @@ module DriveManager
 
       limit = 10_000
       page_token = nil
+
       loop do
+        Manager.sleep_until_turn
         result = drive.list_files(page_size: [limit, 100].min,
                                   page_token: page_token,
                                   fields: 'files(id,name,mime_type,modified_time),next_page_token')
@@ -39,6 +41,7 @@ module DriveManager
         result.files.each do |file|
           puts "#{file.id}, #{file.name}, #{file.mime_type}, #{file.modified_time}"
           dest = StringIO.new
+          # Manager.sleep_until_turn
           # drive.get_file(file.id, download_dest: dest)
           # puts dest.string
           DriveNLP.process(file, dest.string)

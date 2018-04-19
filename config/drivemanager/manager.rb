@@ -1,10 +1,14 @@
 require 'google/apis/drive_v3'
 require 'googleauth'
 
+# Module for Google Drive API interaction
 module DriveManager
   # Class for authenticating a Google Drive service object
   class Manager
+    class << self; attr_accessor :request_queue end
     attr_accessor :service
+    @last_request = Time.now.to_f
+    @request_mutex = Mutex.new
 
     def initialize
       @service = authorize_service(Google::Apis::DriveV3::DriveService.new)
@@ -43,6 +47,18 @@ module DriveManager
       File.exist?(KEY_FILE.to_s) && File.delete(KEY_FILE.to_s)
       File.open(KEY_FILE.to_s, 'w') do |f|
         f.write(CLIENT_SECRET.to_json.gsub('\\\\', '\\'))
+      end
+    end
+
+    def self.sleep_until_turn
+      loop do
+        @request_mutex.synchronize do
+          if Time.now.to_f - @last_request > 0.1
+            @last_request = Time.now.to_f
+            return
+          end
+        end
+        sleep 0.1
       end
     end
   end
