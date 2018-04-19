@@ -2,7 +2,7 @@ require 'google/apis/drive_v3'
 require 'googleauth'
 
 module DriveManager
-  # Class for interacting with the Google Drive API
+  # Class for authenticating a Google Drive service object
   class Manager
     attr_accessor :service
 
