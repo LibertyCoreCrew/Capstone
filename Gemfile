@@ -37,6 +37,7 @@ gem 'roo-xls'
 gem 'docx'
 gem 'msworddoc-extractor', :git => 'https://github.com/dayflower/msworddoc-extractor'
 gem 'ruby-rtf'
+gem 'ruby_powerpoint'
 
 gem 'rails_admin', '~> 1.3'
 # Use Capistrano for deployment

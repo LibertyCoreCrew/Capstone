@@ -7,6 +7,7 @@ require 'tempfile'
 require 'docx'
 require 'msworddoc-extractor'
 require 'ruby-rtf'
+require 'ruby_powerpoint'
 
 module DriveManager
   # Strategy:
@@ -74,6 +75,8 @@ module DriveManager
                   drive.export_file(file.id, 'text/plain', download_dest: StringIO.new).string
                 elsif type == 'application/vnd.google-apps.spreadsheet'
                   drive.export_file(file.id, 'text/csv', download_dest: StringIO.new).string
+                elsif type == 'application/vnd.google-apps.presentation'
+                  drive.export_file(file.id, 'text/plain', download_dest: StringIO.new).string
                 elsif type == 'text/plain'
                   drive.get_file(file.id, download_dest: StringIO.new).string
                 elsif type == 'application/pdf'
@@ -95,6 +98,10 @@ module DriveManager
                   temp = Tempfile.new(['temp', ".#{file.file_extension}"])
                   drive.get_file(file.id, download_dest: temp.path)
                   process_rtf(temp)
+                elsif type == 'application/vnd.openxmlformats-officedocument.presentationml.presentation' && file.file_extension == 'pptx'
+                  temp = Tempfile.new(['temp', ".#{file.file_extension}"])
+                  drive.get_file(file.id, download_dest: temp.path)
+                  process_pptx(temp)
                 else
                   ''
                 end
@@ -141,9 +148,7 @@ module DriveManager
       doc = Docx::Document.open(temp.path)
       content = ''
       return content unless doc
-      doc.paragraphs.each do |p|
-        content << p.to_s
-      end
+      doc.paragraphs.each { |p| content << p.to_s }
       temp.close
       temp.unlink
       content
@@ -165,9 +170,7 @@ module DriveManager
       doc = RubyRTF::Parser.new.parse(data)
       puts ''
       content = ''
-      doc.sections.each do |section|
-        content << section[:text].to_s
-      end
+      doc.sections.each { |sect| content << sect[:text].to_s }
       content ||= ''
       temp.close
       temp.unlink
@@ -177,6 +180,18 @@ module DriveManager
       puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
       puts e.class
       ''
+    end
+
+    def self.process_pptx(temp)
+      deck = RubyPowerpoint::Presentation.new temp.path
+      content = ''
+      deck.slides.each do |slide|
+        content << slide.title + ' '
+        slide.content.each { |cont| content << cont + ' ' }
+      end
+      temp.close
+      temp.unlink
+      content
     end
   end
 end
