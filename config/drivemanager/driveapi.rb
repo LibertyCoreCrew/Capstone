@@ -1,5 +1,6 @@
 require_relative './manager.rb'
 require_relative './drivenlp.rb'
+require 'pdf-reader'
 
 module DriveManager
   # Strategy:
@@ -39,18 +40,9 @@ module DriveManager
                                   fields: 'files(id,name,mime_type,modified_time),next_page_token')
 
         result.files.each do |file|
-          puts "#{file.id}, #{file.name}, #{file.mime_type}, #{file.modified_time}"
-          Manager.sleep_until_turn
-          text = ['application/vnd.google-apps.document'].any? { |word| file.mime_type.include?(word) }
-          content = if text
-                      drive.export_file(file.id, 'text/plain', download_dest: StringIO.new).string
-                    elsif file.mime_type == 'text/plain'
-                      drive.get_file(file.id, download_dest: StringIO.new).string
-                    else
-                      ''
-                    end
-          content.gsub!(/[^0-9a-z ]/i, ' ')
-          puts content + "\n"
+          # puts "#{file.id}, #{file.name}, #{file.mime_type}"
+          content = extract_text(drive, file)
+          # puts content + "\n\n"
           DriveNLP.process(file, content)
         end
 
@@ -59,6 +51,40 @@ module DriveManager
         page_token = result.next_page_token
         break unless page_token && limit > 0
       end
+    end
+
+    def self.extract_text(drive, file)
+      Manager.sleep_until_turn
+      type = file.mime_type
+      content = if type == 'application/vnd.google-apps.document'
+                  drive.export_file(file.id, 'text/plain', download_dest: StringIO.new).string
+                elsif type == 'text/plain'
+                  drive.get_file(file.id, download_dest: StringIO.new).string
+                elsif type == 'application/pdf'
+                  pdf = drive.get_file(file.id, download_dest: StringIO.new)
+                  parse_pdf(pdf)
+                else
+                  ''
+                end
+      content.gsub!(/[^0-9a-z\. ]/i, ' ')
+      content
+    end
+
+    def self.parse_pdf(pdf)
+      reader = PDF::Reader.new(pdf)
+      content = ''
+      limit = [10, reader.page_count].min
+      reader.pages.each do |page|
+        content << page.text
+        limit -= 1
+        break if limit.zero?
+      end
+      content
+    rescue PDF::MalformedPDFError, PDF::UnsupportedFeatureError => e
+      puts e
+      puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
+      puts e.class
+      ''
     end
   end
 end
