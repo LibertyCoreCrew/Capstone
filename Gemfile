@@ -33,6 +33,7 @@ gem 'devise'
 gem 'bcrypt', git: 'https://github.com/codahale/bcrypt-ruby.git', :require => 'bcrypt'
 gem 'pdf-reader'
 gem 'roo'
+gem 'roo-xls'
 
 gem 'rails_admin', '~> 1.3'
 # Use Capistrano for deployment

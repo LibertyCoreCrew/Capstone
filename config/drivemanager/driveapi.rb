@@ -2,6 +2,7 @@ require_relative './manager.rb'
 require_relative './drivenlp.rb'
 require 'pdf-reader'
 require 'roo'
+require 'roo-xls'
 require 'tempfile'
 
 module DriveManager
@@ -60,6 +61,12 @@ module DriveManager
     def self.extract_text(drive, file)
       Manager.sleep_until_turn
       type = file.mime_type
+      roo_xls = %w[
+        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+        text/csv
+        application/vnd.ms-excel
+        application/vnd.ms-excel.sheet.macroenabled.12
+      ]
       content = if type == 'application/vnd.google-apps.document'
                   drive.export_file(file.id, 'text/plain', download_dest: StringIO.new).string
                 elsif type == 'application/vnd.google-apps.spreadsheet'
@@ -69,10 +76,10 @@ module DriveManager
                 elsif type == 'application/pdf'
                   pdf = drive.get_file(file.id, download_dest: StringIO.new)
                   parse_pdf(pdf)
-                elsif type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                elsif roo_xls.include?(type)
                   temp = Tempfile.new(['temp', ".#{file.file_extension}"])
                   drive.get_file(file.id, download_dest: temp.path)
-                  parse_xls(temp, file.file_extension)
+                  parse_xlsx_xls_csv(temp, file.file_extension)
                 else
                   ''
                 end
@@ -97,7 +104,7 @@ module DriveManager
       ''
     end
 
-    def self.parse_xls(temp, extension)
+    def self.parse_xlsx_xls_csv(temp, extension)
       xlsx = Roo::Spreadsheet.open(temp.path, extension: extension)
       content = ''
       limit = [10, xlsx.sheets.count].min
