@@ -40,11 +40,18 @@ module DriveManager
 
         result.files.each do |file|
           puts "#{file.id}, #{file.name}, #{file.mime_type}, #{file.modified_time}"
-          dest = StringIO.new
-          # Manager.sleep_until_turn
-          # drive.get_file(file.id, download_dest: dest)
-          # puts dest.string
-          DriveNLP.process(file, dest.string)
+          Manager.sleep_until_turn
+          text = ['application/vnd.google-apps.document'].any? { |word| file.mime_type.include?(word) }
+          content = if text
+                      drive.export_file(file.id, 'text/plain', download_dest: StringIO.new).string
+                    elsif file.mime_type == 'text/plain'
+                      drive.get_file(file.id, download_dest: StringIO.new).string
+                    else
+                      ''
+                    end
+          content.gsub!(/[^0-9a-z ]/i, ' ')
+          puts content + "\n"
+          DriveNLP.process(file, content)
         end
 
         # Break once we hit the limit or have run out of pages
