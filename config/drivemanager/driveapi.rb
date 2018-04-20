@@ -4,6 +4,9 @@ require 'pdf-reader'
 require 'roo'
 require 'roo-xls'
 require 'tempfile'
+require 'docx'
+require 'msworddoc-extractor'
+require 'ruby-rtf'
 
 module DriveManager
   # Strategy:
@@ -80,10 +83,22 @@ module DriveManager
                   temp = Tempfile.new(['temp', ".#{file.file_extension}"])
                   drive.get_file(file.id, download_dest: temp.path)
                   parse_xlsx_xls_csv(temp, file.file_extension)
+                elsif type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                  temp = Tempfile.new(['temp', ".#{file.file_extension}"])
+                  drive.get_file(file.id, download_dest: temp.path)
+                  process_docx(temp)
+                elsif type == 'application/msword' && file.file_extension == 'doc'
+                  temp = Tempfile.new(['temp', ".#{file.file_extension}"])
+                  drive.get_file(file.id, download_dest: temp.path)
+                  process_doc(temp)
+                elsif type == 'application/msword' && file.file_extension == 'rtf'
+                  temp = Tempfile.new(['temp', ".#{file.file_extension}"])
+                  drive.get_file(file.id, download_dest: temp.path)
+                  process_rtf(temp)
                 else
                   ''
                 end
-      content.gsub!(/[^0-9a-z\. ]/i, ' ')
+      content.gsub!(/[^0-9a-z\.\!\?\'\"\[\]\(\)\$ ]/i, ' ')
       content
     end
 
@@ -120,6 +135,48 @@ module DriveManager
       temp.close
       temp.unlink
       content
+    end
+
+    def self.process_docx(temp)
+      doc = Docx::Document.open(temp.path)
+      content = ''
+      return content unless doc
+      doc.paragraphs.each do |p|
+        content << p.to_s
+      end
+      temp.close
+      temp.unlink
+      content
+    end
+
+    def self.process_doc(temp)
+      content = ''
+      MSWordDoc::Extractor.load(temp.path) do |doc|
+        content << doc.whole_contents.to_s + ' '
+      end
+      temp.close
+      temp.unlink
+      content
+    end
+
+    def self.process_rtf(temp)
+      data = File.open(temp).read
+      puts 'Ignore any errors below:'
+      doc = RubyRTF::Parser.new.parse(data)
+      puts ''
+      content = ''
+      doc.sections.each do |section|
+        content << section[:text].to_s
+      end
+      content ||= ''
+      temp.close
+      temp.unlink
+      content
+    rescue RubyRTF::InvalidDocument => e
+      puts e
+      puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
+      puts e.class
+      ''
     end
   end
 end

@@ -34,6 +34,9 @@ gem 'bcrypt', git: 'https://github.com/codahale/bcrypt-ruby.git', :require => 'b
 gem 'pdf-reader'
 gem 'roo'
 gem 'roo-xls'
+gem 'docx'
+gem 'msworddoc-extractor', :git => 'https://github.com/dayflower/msworddoc-extractor'
+gem 'ruby-rtf'
 
 gem 'rails_admin', '~> 1.3'
 # Use Capistrano for deployment
