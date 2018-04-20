@@ -1,6 +1,8 @@
 require_relative './manager.rb'
 require_relative './drivenlp.rb'
 require 'pdf-reader'
+require 'roo'
+require 'tempfile'
 
 module DriveManager
   # Strategy:
@@ -27,6 +29,8 @@ module DriveManager
   class DriveAPI
     # Got some of the code from here:
     # https://github.com/google/google-api-ruby-client/blob/master/samples/cli/lib/samples/drive.rb
+    # Once we implement a database to record whether files have already been checked, this method
+    # will just loop repeatedly to check for newly updated or added files to be parsed.
     def self.nlp_file_monitoring
       drive = Manager.new.service
 
@@ -37,7 +41,7 @@ module DriveManager
         Manager.sleep_until_turn
         result = drive.list_files(page_size: [limit, 100].min,
                                   page_token: page_token,
-                                  fields: 'files(id,name,mime_type,modified_time),next_page_token')
+                                  fields: 'files(id,name,mime_type,modified_time,file_extension),next_page_token')
 
         result.files.each do |file|
           # puts "#{file.id}, #{file.name}, #{file.mime_type}"
@@ -58,11 +62,17 @@ module DriveManager
       type = file.mime_type
       content = if type == 'application/vnd.google-apps.document'
                   drive.export_file(file.id, 'text/plain', download_dest: StringIO.new).string
+                elsif type == 'application/vnd.google-apps.spreadsheet'
+                  drive.export_file(file.id, 'text/csv', download_dest: StringIO.new).string
                 elsif type == 'text/plain'
                   drive.get_file(file.id, download_dest: StringIO.new).string
                 elsif type == 'application/pdf'
                   pdf = drive.get_file(file.id, download_dest: StringIO.new)
                   parse_pdf(pdf)
+                elsif type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                  temp = Tempfile.new(['temp', ".#{file.file_extension}"])
+                  drive.get_file(file.id, download_dest: temp.path)
+                  parse_xls(temp, file.file_extension)
                 else
                   ''
                 end
@@ -85,6 +95,24 @@ module DriveManager
       puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
       puts e.class
       ''
+    end
+
+    def self.parse_xls(temp, extension)
+      xlsx = Roo::Spreadsheet.open(temp.path, extension: extension)
+      content = ''
+      limit = [10, xlsx.sheets.count].min
+      xlsx.sheets.each do |sheet_name|
+        xlsx.sheet(sheet_name).each do |row|
+          row.each do |value|
+            content << "#{value} " if value.to_s != ''
+          end
+        end
+        limit -= 1
+        break if limit.zero?
+      end
+      temp.close
+      temp.unlink
+      content
     end
   end
 end
