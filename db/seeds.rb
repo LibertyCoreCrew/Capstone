@@ -10,8 +10,6 @@
 Project.create( name: '52659' )
 Tract.create( name: '8' )
 
-user = User.create! :name => 'Admin', :email => 'admin@gmail.com', :password => 'admin123', :password_confirmation => 'admin123', :admin => true
-
 user = User.create!([{ 
 :name => 'Admin', 
 :email => 'admin@gmail.com', 
