@@ -35,29 +35,63 @@ user = User.create!([{
 :admin => false 
 }])
 p "Created #{User.count} users"
+project = Project.create!([{ 
+:name => 8 
+},
+{ 
+:name => 9 
+},
+{ 
+:name => 17 
+},
+{ 
+:name => 4 
+}
+])
+p "Created #{Project.count} projects"
 tract = Tract.create!([{ 
-:user_id => user.first,
+:user_id => 1,
 :owner_name => "Chris Hannity",
 :owner_phone => '402-555-4685',
 :parcel_address => '123 Main Street',
 :payment_amount => 120.30,
-:remarks => 'Need to reach out still'
+:remarks => 'Need to reach out still',
+:project_id => 1
 },
 { 
-:user_id => user.second,
+:user_id => 2,
 :owner_name => "Bob Marshall",
 :owner_phone => '402-555-8675',
 :parcel_address => '129 Wolf Street',
 :payment_amount => 120.30,
-:remarks => 'Waiting on customer'
+:remarks => 'Waiting on customer',
+:project_id => 3
 },
 { 
-:user_id => user.third,
+:user_id => 3,
 :owner_name => "Ben Smith",
 :owner_phone => '402-555-4921',
 :parcel_address => '1060 Maple Street',
 :payment_amount => 120.30,
-:remarks => 'Complete'
+:remarks => 'Complete',
+:project_id => 2
 }
 ])
 p "Created #{Tract.count} tracts"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
