@@ -2,6 +2,7 @@ class Tract < ApplicationRecord
     belongs_to :project, foreign_key: 'project_id', optional: true
     belongs_to :user, foreign_key: 'user_id', optional: true
     has_many :keydates
+    has_many :google_files
     
     rails_admin do
       configure :user do

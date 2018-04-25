@@ -38,6 +38,30 @@ module DriveManager
               end
             end
             
+            if proj_num_found or tract_num_found
+              
+              @f = GoogleFile.new
+              @f.google_id = file.id
+              @f.last_change = file.modified_time
+              @f.save
+              
+              if proj_num_found
+                if Project.exists?( name: proj_num )
+                  @proj = Project.where( name: proj_num ).take
+                  puts @proj.name
+                  @proj.google_files << @f
+                end
+              end
+              
+              if tract_num_found
+                if Tract.exists?( name: tract_num )
+                  @trac = Tract.where( name: tract_num ).take
+                  @trac.google_files << @f
+                end
+              end
+              
+            end
+            
         end
       
     end
