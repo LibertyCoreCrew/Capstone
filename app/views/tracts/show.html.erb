@@ -9,7 +9,15 @@
                     <h2 class="card-title"><%= @tract.parcel_address %></h2>
                     <p class="card-text">
                         Owner(s): <%= @tract.owner_name %></br>
-                        Other info TBD
+                        Project ID: <%= @tract.project_id %></br>
+                        Payment Amount: <%= @tract.payment_amount %></br>
+                        <% if ( !@tract.remarks.nil? or !@tract.remarks.empty? ) %>
+                            Remarks: <%= @tract.remarks %></br>
+                        <% end %>
+                        <% @tract.keydates.each do |kd| %>
+                          Key date: <%= @kd.inspect %></br>
+                        <% end %>
+                         Key date: <%= @tract.keydates.inspect %></br>
                     </p>
                 </div>
             </div>

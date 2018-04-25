@@ -8,8 +8,7 @@ require 'fileutils'
 class PagesController < ApplicationController
 
   include DriveManager
-  # puts Dir.pwd + '/client_secret.json'
-  # puts CLIENT_SECRETS_PATH
+
 
   before_action :authenticate_user!, except: [:login]
 
@@ -67,10 +66,10 @@ class PagesController < ApplicationController
     end
 
     # Initialize the API
-    drive = Manager.new.service
+    @drive = Manager.new.service
     Manager.sleep_until_turn
-    result = drive.list_files(page_size: 10, fields: 'nextPageToken, files(id, name)')
-    puts @result
+    #@result = drive.list_files(page_size: 10, fields: 'nextPageToken, files(id, name)')
+
   end
 end
 

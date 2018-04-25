@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>pages_controller.rb</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>pages_controller.rb</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">require</span> <span class="hljs-string">'google/apis/drive_v2'</span>
+<span class="hljs-keyword">require</span> <span class="hljs-string">'googleauth'</span>
+<span class="hljs-keyword">require</span> <span class="hljs-string">'googleauth/stores/file_token_store'</span>
+<span class="hljs-keyword">require</span> <span class="hljs-string">'manager'</span>
+<span class="hljs-keyword">require</span> <span class="hljs-string">'fileutils'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Controller for all pages</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PagesController</span> &lt; ApplicationController</span>
+
+  <span class="hljs-keyword">include</span> DriveManager
+
+
+  before_action <span class="hljs-symbol">:authenticate_user!</span>, <span class="hljs-symbol">except:</span> [<span class="hljs-symbol">:login</span>]
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">login</span></span>
+    redirect_to new_user_session_path
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">index</span>;</span> <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">admin</span>;</span> <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dashboard</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Loads the current user into the @user variable</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    @user = current_user                <span class="hljs-comment"># Assign the agent whose tracts and projects will be displayed</span>
+
+    <span class="hljs-keyword">if</span> @user.admin?
+      @user_tracts = Tract.all
+      @user_projects = Project.all.pluck( <span class="hljs-symbol">:id</span> )
+      @display_name = <span class="hljs-string">''</span>
+    <span class="hljs-keyword">else</span>
+      @user_tracts = @user.tracts         <span class="hljs-comment"># The array whose contents are the agent's assigned tracts</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>The collection of projects the user works in, through their assigned tracts</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      @user_projects = @user.tracts.all.select( <span class="hljs-symbol">:project_id</span> ).distinct.pluck( <span class="hljs-symbol">:project_id</span> )
+      @display_name = <span class="hljs-string">'Your '</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">documents</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>#
+Ensure valid credentials, either by restoring from the saved credentials
+files or intitiating an OAuth2 authorization. If authorization is required,
+the user’s default browser will be launched to approve the request.</p>
+<p>@return [Google::Auth::UserRefreshCredentials] OAuth2 credentials</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize</span></span>
+      FileUtils.mkdir_p(File.dirname(CREDENTIALS_PATH))
+
+      client_id = Google::Auth::ClientId.from_file(CLIENT_SECRETS_PATH)
+      token_store = Google::Auth::Stores::FileTokenStore.new(<span class="hljs-symbol">file:</span> CREDENTIALS_PATH)
+      authorizer = Google::Auth::UserAuthorizer.new(
+        client_id, SCOPE, token_store)
+      user_id = <span class="hljs-string">'default'</span>
+      credentials = authorizer.get_credentials(user_id)
+      <span class="hljs-keyword">if</span> credentials.<span class="hljs-literal">nil</span>?
+        url = authorizer.get_authorization_url(
+          <span class="hljs-symbol">base_url:</span> OOB_URI)
+        puts <span class="hljs-string">"Open the following URL in the browser and enter the "</span> +
+             <span class="hljs-string">"resulting code after authorization"</span>
+        puts url
+        code = gets
+        credentials = authorizer.get_and_store_credentials_from_code(
+          <span class="hljs-symbol">user_id:</span> user_id, <span class="hljs-symbol">code:</span> code, <span class="hljs-symbol">base_url:</span> OOB_URI)
+      <span class="hljs-keyword">end</span>
+      credentials
+    <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Initialize the API</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    drive = Manager.new.service
+    Manager.sleep_until_turn
+    result = drive.list_files(<span class="hljs-symbol">page_size:</span> <span class="hljs-number">10</span>, <span class="hljs-symbol">fields:</span> <span class="hljs-string">'nextPageToken, files(id, name)'</span>)
+    puts @result
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>r = b.documents</p>
+
+            </div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
