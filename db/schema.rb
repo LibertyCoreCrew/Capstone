@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180416033442) do
+ActiveRecord::Schema.define(version: 20180425204740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "google_files", force: :cascade do |t|
+    t.integer "project_id"
+    t.integer "tract_id"
+    t.string "google_id"
+    t.datetime "last_change"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "keydates", force: :cascade do |t|
     t.integer "project_id"
@@ -42,6 +51,7 @@ ActiveRecord::Schema.define(version: 20180416033442) do
     t.text "remarks"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
   end
 
   create_table "users", force: :cascade do |t|
