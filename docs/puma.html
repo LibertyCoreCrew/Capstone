@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>puma.rb</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>puma.rb</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>Puma can serve each request in a thread from an internal thread pool.
+The <code>threads</code> method setting takes two numbers: a minimum and maximum.
+Any libraries that use thread pools should be configured to match
+the maximum value specified for Puma. Default is set to 5 threads for minimum
+and maximum; this matches the default thread size of Active Record.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>threads_count = ENV.fetch(<span class="hljs-string">"RAILS_MAX_THREADS"</span>) { <span class="hljs-number">5</span> }
+threads threads_count, threads_count</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Specifies the <code>port</code> that Puma will listen on to receive requests; default is 3000.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>port        ENV.fetch(<span class="hljs-string">"PORT"</span>) { <span class="hljs-number">3000</span> }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Specifies the <code>environment</code> that Puma will run in.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>environment ENV.fetch(<span class="hljs-string">"RAILS_ENV"</span>) { <span class="hljs-string">"development"</span> }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Specifies the number of <code>workers</code> to boot in clustered mode.
+Workers are forked webserver processes. If using threads and workers together
+the concurrency of the application would be max <code>threads</code> * <code>workers</code>.
+Workers do not work on JRuby or Windows (both of which do not support
+processes).</p>
+<p>workers ENV.fetch(“WEB_CONCURRENCY”) { 2 }</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Use the <code>preload_app!</code> method when specifying a <code>workers</code> number.
+This directive tells Puma to first boot the application and load code
+before forking the application. This takes advantage of Copy On Write
+process behavior so workers use less memory. If you use this option
+you need to make sure to reconnect any threads in the <code>on_worker_boot</code>
+block.</p>
+<p>preload_app!</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>If you are preloading your application and using Active Record, it’s
+recommended that you close any connections to the database before workers
+are forked to prevent connection leakage.</p>
+<p>before_fork do
+  ActiveRecord::Base.connection_pool.disconnect! if defined?(ActiveRecord)
+end</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>The code in the <code>on_worker_boot</code> will be called if you are using
+clustered mode by specifying a number of <code>workers</code>. After each worker
+process is booted, this block will be run. If you are using the <code>preload_app!</code>
+option, you will want to use this block to reconnect to any threads
+or connections that may have been created at application boot, as Ruby
+cannot share connections between processes.</p>
+<p>on_worker_boot do
+  ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+end</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Allow puma to be restarted by <code>rails restart</code> command.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>plugin <span class="hljs-symbol">:tmp_restart</span></pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

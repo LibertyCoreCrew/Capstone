@@ -17,6 +17,11 @@
                   <p class="card-text">
                     <%= tract.parcel_address %></br>
                     <%= tract.owner_name %></br>
+                    Tract ID: <%= tract.id %></br>
+                    Payment Amount: <%= tract.payment_amount %></br>
+                    <% if ( !tract.remarks.nil? or !tract.remarks.empty? ) %>
+                        Remarks: <%= tract.remarks %></br>
+                    <% end %>
                     <% if( current_user.admin? or current_user.id == tract.user_id ) %>
                       <%= link_to "Details", tract %>
                     <% end %>
