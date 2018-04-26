@@ -38,29 +38,46 @@ module DriveManager
               end
             end
             
-            # Enter file if it's not currently in the database, or if the file was modified after the file was entered
-            if !GoogleFile.exists?( google_id: file.id ) or GoogleFile.where( google_id: file.id ).take.last_change < file.modified_time
+            file_exists, file_has_been_modified = false, false
+            
+            # Determines if the file exists within the database, and if it has been modified since the last time it was pulled
+            if GoogleFile.exists?( google_id: file.id )
+              file_exists = true
+              if GoogleFile.where( google_id: file.id ).take.last_change < file.modified_time
+                file_has_been_modified = true
+              end
+            end
+            
+            # Only enter the file into the DB if the file doesn't exist, or isn't up to date
+            if !file_exists or file_has_been_modified
               if proj_num_found or tract_num_found
-                @f = GoogleFile.new
-                @f.google_id = file.id
-                @f.last_change = file.modified_time
-                @f.save
-
+                
+                if !file_exists         # Create a new entry for the file
+                  @f = GoogleFile.new
+                  @f.google_id = file.id
+                  @f.last_change = file.modified_time
+                  @f.save
+                else  # Update the modified time
+                  @f = GoogleFile.find_by( google_id: file.id )
+                  @f.last_change = file.modified_time
+                  @f.save
+                end
+                
+                # Relate the file to a project, if the project information was found
                 if proj_num_found
-                  if Project.exists?( name: proj_num )
+                  if Project.exists?( name: proj_num ) and !file_exists
                     @proj = Project.where( name: proj_num ).take
-                    puts @proj.name
                     @proj.google_files << @f
                   end
                 end
-
+                
+                # Relate the file to a tract, if the tract information was found
                 if tract_num_found
-                  if Tract.exists?( name: tract_num )
+                  if Tract.exists?( name: tract_num ) and !file_exists
                     @trac = Tract.where( name: tract_num ).take
                     @trac.google_files << @f
                   end
                 end
-
               end
             end
             
