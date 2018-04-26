@@ -39,7 +39,7 @@ module DriveManager
             end
             
             # Enter file if it's not currently in the database, or if the file was modified after the file was entered
-            if !GoogleFile.exists?( google_id: file.id ) or GoogleFile.where( google_id: file.id ).pluck( :last_change ) < file.modified_time
+            if !GoogleFile.exists?( google_id: file.id ) or GoogleFile.where( google_id: file.id ).take.last_change < file.modified_time
               if proj_num_found or tract_num_found
                 @f = GoogleFile.new
                 @f.google_id = file.id
