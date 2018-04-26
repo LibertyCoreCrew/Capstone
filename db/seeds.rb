@@ -50,7 +50,7 @@ project = Project.create!([{
 ])
 p "Created #{Project.count} projects"
 tract = Tract.create!([{ 
-:name => 8
+:name => 8,
 :user_id => 1,
 :owner_name => "Chris Hannity",
 :owner_phone => '402-555-4685',
