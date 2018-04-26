@@ -17,8 +17,9 @@
             <div class="card mb-3 littlecard">
               <div class="card-body">
                 <p class="card-text">
-                  <%= tract.parcel_address %></br>
-                  <%= tract.owner_name %></br>
+                  <b>Tract No. <%= tract.name %></b></br>
+                  <u>Parcel Address:</u> <%= tract.parcel_address %></br>
+                  <u>Owner(s):</u> <%= tract.owner_name %></br>
                   <%= link_to "Details", tract %>
                 </p>
               </div>
@@ -37,7 +38,7 @@
             <div class="card mb-3 littlecard">
               <div class="card-body">
                 <p class="card-text">
-                  <%= Project.find(project).name %></br>
+                  <b>OPW <%= Project.find(project).name %></b></br>
                   <%= link_to "Details", Project.find(project) %>
                 </p>
               </div>

@@ -22,7 +22,7 @@ user = User.create!([{
 },
 { 
 :name => 'Tim Robins', 
-:email => 'timerobins@gmail.com', 
+:email => 'timrobins@gmail.com', 
 :password => 'password123', 
 :password_confirmation => 'password123', 
 :admin => false 
@@ -59,7 +59,8 @@ tract = Tract.create!([{
 :remarks => 'Need to reach out still',
 :project_id => 1
 },
-{ 
+{
+:name => 17,
 :user_id => 2,
 :owner_name => "Bob Marshall",
 :owner_phone => '402-555-8675',
@@ -68,7 +69,8 @@ tract = Tract.create!([{
 :remarks => 'Waiting on customer',
 :project_id => 3
 },
-{ 
+{
+:name => 5,
 :user_id => 3,
 :owner_name => "Ben Smith",
 :owner_phone => '402-555-4921',

@@ -6,18 +6,41 @@
         <div class="card-deck mx-auto" style="max-width: 90rem;">
             <div class="card m-3 bigcard bg-light">
                 <div class="card-body">
-                    <h2 class="card-title"><%= @tract.parcel_address %></h2>
+                    <h2 class="card-title"><b>Tract No. <%= @tract.name %></b></h2>
                     <p class="card-text">
-                        Owner(s): <%= @tract.owner_name %></br>
-                        Project ID: <%= @tract.project_id %></br>
-                        Payment Amount: <%= @tract.payment_amount %></br>
-                        <% if ( !@tract.remarks.nil? or !@tract.remarks.empty? ) %>
-                            Remarks: <%= @tract.remarks %></br>
+                        <u>Parcel Address:</u> <%= @tract.parcel_address %></br>
+                        <u>Owner(s):</u> <%= @tract.owner_name %></br>
+                        <% unless @tract.project_id.nil? %>
+                            <u>Project:</u> OPW <%= Project.find( @tract.project_id ).name %></br>
                         <% end %>
-                        <% @tract.keydates.each do |kd| %>
-                          Key date: <%= @kd.inspect %></br>
+                        
+                        <% unless @tract.owner_phone.nil? %>
+                            <u>Owner Phone Number:</u> <%= @tract.owner_phone %></br>
                         <% end %>
-                         Key date: <%= @tract.keydates.inspect %></br>
+                        
+                        <% unless @tract.owner_email.nil? %>
+                            <u>Owner Email Address:</u> <%= @tract.owner_email %></br>
+                        <% end %>
+                        
+                        <u>Payment Amount:</u> <%=    number_to_currency( @tract.payment_amount ) %></br>
+                        <% unless @tract.remarks.empty? %>
+                            </br>
+                            <u>Remarks:</u> <%= @tract.remarks %></br>
+                        <% end %>
+                        </br>
+                        <% unless @tract.keydates.empty? %>
+                            <h4><u>Keydates:</u></h4>
+                            <% @tract.keydates.each do |kd| %>
+                                <div class="card mb-3 littlecard">
+                                  <div class="card-body">
+                                        <h5 class="card-title"><%= kd.name %> - <%= kd.date.to_formatted_s(:long_ordinal) %></h5>
+                                        <p class="card-text">
+                                            <%= kd.comments %>
+                                        </p>
+                                  </div>
+                                </div>
+                            <% end %>
+                        <% end %>
                     </p>
                 </div>
             </div>

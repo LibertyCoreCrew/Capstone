@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20180425204740) do
   create_table "tracts", force: :cascade do |t|
     t.integer "project_id"
     t.integer "user_id"
+    t.string "name"
     t.string "owner_name"
     t.string "parcel_address"
     t.string "owner_phone"
@@ -51,11 +52,11 @@ ActiveRecord::Schema.define(version: 20180425204740) do
     t.text "remarks"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name", default: ""
+    t.boolean "admin"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -68,7 +69,6 @@ ActiveRecord::Schema.define(version: 20180425204740) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "admin"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

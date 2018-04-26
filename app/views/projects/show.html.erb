@@ -9,19 +9,15 @@
         <div class="card m-3 bigcard bg-light">
           <div class="card-body">
 
-            <h2 class="card-title"><%= @project.name %></h2>
+            <h2 class="card-title"><b>OPW <%= @project.name %></b></h2>
 
             <% @project_tracts.each do |tract| %>
               <div class="card mb-3 littlecard">
                 <div class="card-body">
+                  <h5 class="card-title"><b>Tract No. <%= tract.name %></b></h5>
                   <p class="card-text">
-                    <%= tract.parcel_address %></br>
-                    <%= tract.owner_name %></br>
-                    Tract ID: <%= tract.id %></br>
-                    Payment Amount: <%= tract.payment_amount %></br>
-                    <% if ( !tract.remarks.nil? or !tract.remarks.empty? ) %>
-                        Remarks: <%= tract.remarks %></br>
-                    <% end %>
+                    <u>Parcel Address:</u> <%= tract.parcel_address %></br>
+                    <u>Owner(s):</u> <%= tract.owner_name %></br>
                     <% if( current_user.admin? or current_user.id == tract.user_id ) %>
                       <%= link_to "Details", tract %>
                     <% end %>
