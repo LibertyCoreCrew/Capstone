@@ -50,7 +50,6 @@ module DriveManager
             
             # Only enter the file into the DB if the file doesn't exist, or isn't up to date
             if !file_exists or file_has_been_modified
-              if proj_num_found or tract_num_found
                 
                 if !file_exists         # Create a new entry for the file
                   @f = GoogleFile.new
@@ -78,7 +77,6 @@ module DriveManager
                     @trac.google_files << @f
                   end
                 end
-              end
             end
             
         end

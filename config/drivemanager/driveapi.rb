@@ -49,7 +49,10 @@ module DriveManager
                                   fields: 'files(id,name,mime_type,modified_time,file_extension),next_page_token')
 
         result.files.each do |file|
-          # puts "#{file.id}, #{file.name}, #{file.mime_type}"
+          puts "#{file.id}, #{file.name}, #{file.mime_type}, #{file.modified_time}"
+          next if file.mime_type == 'application/vnd.google-apps.folder'
+          f = GoogleFile.find_by( google_id: file.id )
+          next unless f.nil? || f.last_change < file.modified_time
           content = extract_text(drive, file)
           # puts content + "\n\n"
           DriveNLP.process(file, content)
