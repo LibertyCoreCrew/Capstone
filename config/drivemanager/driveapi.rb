@@ -39,29 +39,32 @@ module DriveManager
     def self.nlp_file_monitoring
       drive = Manager.new.service
 
-      limit = 10_000
-      page_token = nil
-
       loop do
-        Manager.sleep_until_turn
-        result = drive.list_files(page_size: [limit, 100].min,
-                                  page_token: page_token,
-                                  fields: 'files(id,name,mime_type,modified_time,file_extension),next_page_token')
+        sleep 5
+        limit = 10_000
+        page_token = nil
 
-        result.files.each do |file|
-          puts "#{file.id}, #{file.name}, #{file.mime_type}, #{file.modified_time}"
-          next if file.mime_type == 'application/vnd.google-apps.folder'
-          f = GoogleFile.find_by( google_id: file.id )
-          next unless f.nil? || f.last_change < file.modified_time
-          content = extract_text(drive, file)
-          # puts content + "\n\n"
-          DriveNLP.process(file, content)
+        loop do
+          Manager.sleep_until_turn
+          result = drive.list_files(page_size: [limit, 100].min,
+                                    page_token: page_token,
+                                    fields: 'files(id,name,mime_type,modified_time,file_extension),next_page_token')
+
+          result.files.each do |file|
+            puts "#{file.id}, #{file.name}, #{file.mime_type}, #{file.modified_time}"
+            next if file.mime_type == 'application/vnd.google-apps.folder'
+            f = GoogleFile.find_by( google_id: file.id )
+            next unless f.nil? || f.last_change < file.modified_time
+            content = extract_text(drive, file)
+            # puts content + "\n\n"
+            DriveNLP.process(file, content)
+          end
+
+          # Break once we hit the limit or have run out of pages
+          limit -= result.files.length
+          page_token = result.next_page_token
+          break unless page_token && limit > 0
         end
-
-        # Break once we hit the limit or have run out of pages
-        limit -= result.files.length
-        page_token = result.next_page_token
-        break unless page_token && limit > 0
       end
     end
 
