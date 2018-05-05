@@ -48,7 +48,7 @@ module DriveManager
           Manager.sleep_until_turn
           result = drive.list_files(page_size: [limit, 100].min,
                                     page_token: page_token,
-                                    fields: 'files(id,name,mime_type,modified_time,file_extension),next_page_token')
+                                    fields: 'files(id,name,mime_type,modified_time,file_extension,web_view_link),next_page_token')
 
           result.files.each do |file|
             puts "#{file.id}, #{file.name}, #{file.mime_type}, #{file.modified_time}"

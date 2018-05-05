@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20180425204740) do
     t.integer "project_id"
     t.integer "tract_id"
     t.string "google_id"
+    t.string "web_view_link"
     t.datetime "last_change"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
