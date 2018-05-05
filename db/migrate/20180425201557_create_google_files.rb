@@ -6,6 +6,8 @@ class CreateGoogleFiles < ActiveRecord::Migration[5.1]
       t.integer  :tract_id
       
       t.string :google_id
+      t.string :web_view_link
+      t.string :name
       t.datetime :last_change
 
       t.timestamps
