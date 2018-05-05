@@ -41,6 +41,15 @@
                                 </div>
                             <% end %>
                         <% end %>
+                        <h3> Associated Files </h3>
+                        <% unless @tract.google_files.empty? %>
+                          <% @tract.google_files.each do |file| %>
+                            <%= link_to file.name, file.web_view_link %> <br></br>
+                          <% end %>
+                        <% end %>
+                        <% if @tract.google_files.empty? %>
+                        <p>No associated files detected!</p>
+                        <% end %>
                     </p>
                 </div>
             </div>

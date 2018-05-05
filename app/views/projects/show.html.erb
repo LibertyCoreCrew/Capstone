@@ -19,7 +19,16 @@
                     <u>Parcel Address:</u> <%= tract.parcel_address %></br>
                     <u>Owner(s):</u> <%= tract.owner_name %></br>
                     <% if( current_user.admin? or current_user.id == tract.user_id ) %>
-                      <%= link_to "Details", tract %>
+                      <%= link_to "Details", tract %> <br></br>
+                    <% end %>
+                    <h3> Associated Files </h3>
+                    <% unless tract.google_files.empty? %>
+                      <% tract.google_files.each do |file| %>
+                        <%= link_to file.name, file.web_view_link %> <br></br>
+                      <% end %>
+                    <% end %>
+                    <% if tract.google_files.empty? %>
+                    <p>No associated files detected!</p>
                     <% end %>
                   </p>
                 </div>

@@ -56,11 +56,13 @@ module DriveManager
                   @f.google_id = file.id
                   @f.last_change = file.modified_time
                   @f.web_view_link = file.web_view_link
+                  @f.name = file.name
                   @f.save
                 else  # Update the modified time
                   @f = GoogleFile.find_by( google_id: file.id )
                   @f.last_change = file.modified_time
                   @f.web_view_link = file.web_view_link
+                  @f.name = file.name
                   @f.save
                 end
                 
