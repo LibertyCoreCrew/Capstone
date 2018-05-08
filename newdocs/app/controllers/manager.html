@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>manager.rb</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="..\..\docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>manager.rb</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">require</span> <span class="hljs-string">'google/apis/drive_v3'</span>
+<span class="hljs-keyword">require</span> <span class="hljs-string">'googleauth'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">DriveManager</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Class for interacting with the Google Drive API</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Manager</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> &lt;&lt; self</span>
+      <span class="hljs-keyword">attr_accessor</span> <span class="hljs-symbol">:service</span>
+    <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Create and authenticate the Google Drive service object.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span></span>
+      <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.service = Google::Apis::DriveV3::DriveService.new
+      authorize_service(<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.service)
+    <span class="hljs-keyword">end</span>
+
+    private</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Pull private key ID and private key from environment variables.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    PROJECT_ID = <span class="hljs-string">'lc-docs-development'</span>.freeze
+    KEY_FILE = <span class="hljs-string">'client_secret.json'</span>.freeze
+    CLIENT_SECRET = {
+      <span class="hljs-string">'type'</span> =&gt; <span class="hljs-string">'service_account'</span>,
+      <span class="hljs-string">'project_id'</span> =&gt; PROJECT_ID,
+      <span class="hljs-string">'private_key_id'</span> =&gt; ENV[<span class="hljs-string">'LC_PRIVATE_KEY_ID'</span>],
+      <span class="hljs-string">'private_key'</span> =&gt; ENV[<span class="hljs-string">'LC_PRIVATE_KEY1'</span>] + ENV[<span class="hljs-string">'LC_PRIVATE_KEY2'</span>],
+      <span class="hljs-string">'client_email'</span> =&gt; <span class="hljs-string">'lc-docs-service@lc-docs-development.iam.gserviceaccount.com'</span>,
+      <span class="hljs-string">'client_id'</span> =&gt; <span class="hljs-string">'100459812085611549381'</span>,
+      <span class="hljs-string">'auth_uri'</span> =&gt; <span class="hljs-string">'https://accounts.google.com/o/oauth2/auth'</span>,
+      <span class="hljs-string">'token_uri'</span> =&gt; <span class="hljs-string">'https://accounts.google.com/o/oauth2/token'</span>,
+      <span class="hljs-string">'auth_provider_x509_cert_url'</span> =&gt; <span class="hljs-string">'https://www.googleapis.com/oauth2/v1/certs'</span>,
+      <span class="hljs-string">'client_x509_cert_url'</span> =&gt; <span class="hljs-string">'https://www.googleapis.com/robot/v1/metadata/x509/lc-docs-service%40lc-docs-development.iam.gserviceaccount.com'</span>
+    }.freeze</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Use the generated client_secret.json file to authenticate the Google Drive service object.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_service</span><span class="hljs-params">(service)</span></span>
+      create_client_secret_file
+      scopes = [<span class="hljs-string">'https://www.googleapis.com/auth/drive'</span>]
+      File.open(<span class="hljs-string">'client_secret.json'</span>.to_s, <span class="hljs-string">'r'</span>) <span class="hljs-keyword">do</span> <span class="hljs-params">|json_io|</span>
+        service.authorization = Google::Auth::DefaultCredentials.make_creds(
+          <span class="hljs-symbol">scope:</span> scopes,
+          <span class="hljs-symbol">json_key_io:</span> json_io
+        )
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Create the client_secret file using the private key information.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_client_secret_file</span></span>
+      File.exist?(KEY_FILE.to_s) &amp;&amp; File.delete(KEY_FILE.to_s)
+      File.open(KEY_FILE.to_s, <span class="hljs-string">'w'</span>) <span class="hljs-keyword">do</span> <span class="hljs-params">|f|</span>
+        f.write(CLIENT_SECRET.to_json.gsub(<span class="hljs-string">'\\\\'</span>, <span class="hljs-string">'\\'</span>))
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

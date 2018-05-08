@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   get '/tracts/:id' => 'tracts#show', as: 'tract'
   get '/projects/:id' => 'projects#show', as: 'project'
+  get '/documentation', :to => redirect('/application.html')
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
