@@ -5,7 +5,7 @@
   <title>pages_controller.rb</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-  <link rel="stylesheet" media="all" href="docco.css" />
+  <link rel="stylesheet" media="all" href="..\..\docco.css" />
 </head>
 <body>
   <div id="container">
@@ -160,12 +160,8 @@ the user’s default browser will be launched to approve the request.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    drive = Manager.new.service
-    Manager.sleep_until_turn
-    result = drive.list_files(<span class="hljs-symbol">page_size:</span> <span class="hljs-number">10</span>, <span class="hljs-symbol">fields:</span> <span class="hljs-string">'nextPageToken, files(id, name)'</span>)
-    puts @result
-  <span class="hljs-keyword">end</span>
-<span class="hljs-keyword">end</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    @drive = Manager.new.service
+    Manager.sleep_until_turn</pre></div></div>
             
         </li>
         
@@ -175,6 +171,23 @@ the user’s default browser will be launched to approve the request.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>@result = drive.list_files(page_size: 10, fields: ‘nextPageToken, files(id, name)’)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>r = b.documents</p>
 

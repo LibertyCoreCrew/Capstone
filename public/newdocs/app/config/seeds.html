@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>seeds.rb</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>seeds.rb</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>This file should contain all the record creation needed to seed the database with its default values.
+The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).</p>
+<p>Examples:</p>
+<p>  movies = Movie.create([{ name: ‘Star Wars’ }, { name: ‘Lord of the Rings’ }])
+  Character.create(name: ‘Luke’, movie: movies.first)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+user = User.create!([{ 
+<span class="hljs-symbol">:name</span> =&gt; <span class="hljs-string">'Admin'</span>, 
+<span class="hljs-symbol">:email</span> =&gt; <span class="hljs-string">'admin@gmail.com'</span>, 
+<span class="hljs-symbol">:password</span> =&gt; <span class="hljs-string">'admin123'</span>, 
+<span class="hljs-symbol">:password_confirmation</span> =&gt; <span class="hljs-string">'admin123'</span>, 
+<span class="hljs-symbol">:admin</span> =&gt; <span class="hljs-literal">true</span> 
+},
+{ 
+<span class="hljs-symbol">:name</span> =&gt; <span class="hljs-string">'Greg Johnson'</span>, 
+<span class="hljs-symbol">:email</span> =&gt; <span class="hljs-string">'gregjohnson@gmail.com'</span>, 
+<span class="hljs-symbol">:password</span> =&gt; <span class="hljs-string">'password123'</span>, 
+<span class="hljs-symbol">:password_confirmation</span> =&gt; <span class="hljs-string">'password123'</span>, 
+<span class="hljs-symbol">:admin</span> =&gt; <span class="hljs-literal">false</span> 
+},
+{ 
+<span class="hljs-symbol">:name</span> =&gt; <span class="hljs-string">'Tim Robins'</span>, 
+<span class="hljs-symbol">:email</span> =&gt; <span class="hljs-string">'timrobins@gmail.com'</span>, 
+<span class="hljs-symbol">:password</span> =&gt; <span class="hljs-string">'password123'</span>, 
+<span class="hljs-symbol">:password_confirmation</span> =&gt; <span class="hljs-string">'password123'</span>, 
+<span class="hljs-symbol">:admin</span> =&gt; <span class="hljs-literal">false</span> 
+},
+{ 
+<span class="hljs-symbol">:name</span> =&gt; <span class="hljs-string">'Frank Nelson'</span>, 
+<span class="hljs-symbol">:email</span> =&gt; <span class="hljs-string">'franknelson@gmail.com'</span>, 
+<span class="hljs-symbol">:password</span> =&gt; <span class="hljs-string">'password123'</span>, 
+<span class="hljs-symbol">:password_confirmation</span> =&gt; <span class="hljs-string">'password123'</span>, 
+<span class="hljs-symbol">:admin</span> =&gt; <span class="hljs-literal">false</span> 
+}])
+p <span class="hljs-string">"Created <span class="hljs-subst">#{User.count}</span> users"</span>
+project = Project.create!([{ 
+<span class="hljs-symbol">:name</span> =&gt; <span class="hljs-number">52659</span> 
+},
+{ 
+<span class="hljs-symbol">:name</span> =&gt; <span class="hljs-number">9</span> 
+},
+{ 
+<span class="hljs-symbol">:name</span> =&gt; <span class="hljs-number">17</span> 
+},
+{ 
+<span class="hljs-symbol">:name</span> =&gt; <span class="hljs-number">4</span> 
+}
+])
+p <span class="hljs-string">"Created <span class="hljs-subst">#{Project.count}</span> projects"</span>
+tract = Tract.create!([{ 
+<span class="hljs-symbol">:name</span> =&gt; <span class="hljs-number">8</span>,
+<span class="hljs-symbol">:user_id</span> =&gt; <span class="hljs-number">1</span>,
+<span class="hljs-symbol">:owner_name</span> =&gt; <span class="hljs-string">"Chris Hannity"</span>,
+<span class="hljs-symbol">:owner_phone</span> =&gt; <span class="hljs-string">'402-555-4685'</span>,
+<span class="hljs-symbol">:parcel_address</span> =&gt; <span class="hljs-string">'123 Main Street'</span>,
+<span class="hljs-symbol">:payment_amount</span> =&gt; <span class="hljs-number">120.30</span>,
+<span class="hljs-symbol">:remarks</span> =&gt; <span class="hljs-string">'Need to reach out still'</span>,
+<span class="hljs-symbol">:project_id</span> =&gt; <span class="hljs-number">1</span>
+},
+{
+<span class="hljs-symbol">:name</span> =&gt; <span class="hljs-number">17</span>,
+<span class="hljs-symbol">:user_id</span> =&gt; <span class="hljs-number">2</span>,
+<span class="hljs-symbol">:owner_name</span> =&gt; <span class="hljs-string">"Bob Marshall"</span>,
+<span class="hljs-symbol">:owner_phone</span> =&gt; <span class="hljs-string">'402-555-8675'</span>,
+<span class="hljs-symbol">:parcel_address</span> =&gt; <span class="hljs-string">'129 Wolf Street'</span>,
+<span class="hljs-symbol">:payment_amount</span> =&gt; <span class="hljs-number">120.30</span>,
+<span class="hljs-symbol">:remarks</span> =&gt; <span class="hljs-string">'Waiting on customer'</span>,
+<span class="hljs-symbol">:project_id</span> =&gt; <span class="hljs-number">3</span>
+},
+{
+<span class="hljs-symbol">:name</span> =&gt; <span class="hljs-number">5</span>,
+<span class="hljs-symbol">:user_id</span> =&gt; <span class="hljs-number">3</span>,
+<span class="hljs-symbol">:owner_name</span> =&gt; <span class="hljs-string">"Ben Smith"</span>,
+<span class="hljs-symbol">:owner_phone</span> =&gt; <span class="hljs-string">'402-555-4921'</span>,
+<span class="hljs-symbol">:parcel_address</span> =&gt; <span class="hljs-string">'1060 Maple Street'</span>,
+<span class="hljs-symbol">:payment_amount</span> =&gt; <span class="hljs-number">120.30</span>,
+<span class="hljs-symbol">:remarks</span> =&gt; <span class="hljs-string">'Complete'</span>,
+<span class="hljs-symbol">:project_id</span> =&gt; <span class="hljs-number">2</span>
+}
+])
+p <span class="hljs-string">"Created <span class="hljs-subst">#{Tract.count}</span> tracts"</span></pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

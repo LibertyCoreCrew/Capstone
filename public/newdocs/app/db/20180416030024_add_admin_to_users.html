@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>tracts_controller.rb</title>
+  <title>20180416030024_add_admin_to_users.rb</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -15,7 +15,7 @@
         
           <li id="title">
               <div class="annotation">
-                  <h1>tracts_controller.rb</h1>
+                  <h1>20180416030024_add_admin_to_users.rb</h1>
               </div>
           </li>
         
@@ -30,16 +30,10 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TractsController</span> &lt; ApplicationController</span>
-    
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">show</span></span>
-        @tract = Tract.find(params[<span class="hljs-symbol">:id</span>])
-        
-        <span class="hljs-keyword">if</span>( !current_user.admin? <span class="hljs-keyword">and</span> current_user.id != @tract.user_id )
-            redirect_to main_app.root_path
-        <span class="hljs-keyword">end</span>
-    <span class="hljs-keyword">end</span>
-
+            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AddAdminToUsers</span> &lt; ActiveRecord::Migration[5.1]</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">change</span></span>
+    add_column <span class="hljs-symbol">:users</span>, <span class="hljs-symbol">:admin</span>, <span class="hljs-symbol">:boolean</span>
+  <span class="hljs-keyword">end</span>
 <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>

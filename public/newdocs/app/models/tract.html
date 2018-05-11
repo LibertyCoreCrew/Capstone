@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>tract.rb</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="..\..\docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>tract.rb</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Tract</span> &lt; ApplicationRecord</span>
+    belongs_to <span class="hljs-symbol">:project</span>, <span class="hljs-symbol">foreign_key:</span> <span class="hljs-string">'project_id'</span>, <span class="hljs-symbol">optional:</span> <span class="hljs-literal">true</span>
+    belongs_to <span class="hljs-symbol">:user</span>, <span class="hljs-symbol">foreign_key:</span> <span class="hljs-string">'user_id'</span>, <span class="hljs-symbol">optional:</span> <span class="hljs-literal">true</span>
+    has_many <span class="hljs-symbol">:keydates</span>
+    has_many <span class="hljs-symbol">:google_files</span>
+    
+    validates <span class="hljs-symbol">:name</span>, <span class="hljs-symbol">:parcel_address</span>, <span class="hljs-symbol">:owner_name</span>, <span class="hljs-symbol">:payment_amount</span>, <span class="hljs-symbol">:presence</span> =&gt; <span class="hljs-literal">true</span>
+    
+    validates <span class="hljs-symbol">:owner_phone</span>, <span class="hljs-symbol">allow_blank:</span> <span class="hljs-literal">true</span>, <span class="hljs-symbol">format:</span> { <span class="hljs-symbol">with:</span> /\d{<span class="hljs-number">3</span>}-\d{<span class="hljs-number">3</span>}-\d{<span class="hljs-number">4</span>}/ }
+    validates <span class="hljs-symbol">:owner_email</span>, <span class="hljs-symbol">allow_blank:</span> <span class="hljs-literal">true</span>, <span class="hljs-symbol">:format</span> =&gt; <span class="hljs-regexp">/@/</span>
+    validates <span class="hljs-symbol">:name</span>, <span class="hljs-symbol">numericality:</span> { <span class="hljs-symbol">only_integer:</span> <span class="hljs-literal">true</span>, <span class="hljs-symbol">:greater_than_or_equal_to</span> =&gt; <span class="hljs-number">0</span> }
+    validates <span class="hljs-symbol">:payment_amount</span>, <span class="hljs-symbol">numericality:</span> { <span class="hljs-symbol">:greater_than_or_equal_to</span> =&gt; <span class="hljs-number">0</span> }
+    
+    rails_admin <span class="hljs-keyword">do</span>
+      configure <span class="hljs-symbol">:name</span> <span class="hljs-keyword">do</span>
+        label <span class="hljs-string">'Tract No.'</span>
+      <span class="hljs-keyword">end</span>
+      configure <span class="hljs-symbol">:user</span> <span class="hljs-keyword">do</span>
+        label <span class="hljs-string">'Agent assigned to this tract'</span>
+      <span class="hljs-keyword">end</span>
+      configure <span class="hljs-symbol">:project</span> <span class="hljs-keyword">do</span>
+        label <span class="hljs-string">'Project this tract is a part of'</span>
+      <span class="hljs-keyword">end</span>
+      configure <span class="hljs-symbol">:owner_name</span> <span class="hljs-keyword">do</span>
+        label <span class="hljs-string">'Owner name(s)'</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  
+<span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
