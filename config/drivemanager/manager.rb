@@ -15,19 +15,18 @@ module DriveManager
     end
 
     # Pull private key ID and private key from environment variables.
-    PROJECT_ID = 'lc-docs-development'.freeze
     KEY_FILE = 'client_secret.json'.freeze
     CLIENT_SECRET = {
       'type' => 'service_account',
-      'project_id' => PROJECT_ID,
+      'project_id' => ENV['LC_PROJECT_ID'],
       'private_key_id' => ENV['LC_PRIVATE_KEY_ID'],
       'private_key' => ENV['LC_PRIVATE_KEY1'] + ENV['LC_PRIVATE_KEY2'],
-      'client_email' => 'lc-docs-service@lc-docs-development.iam.gserviceaccount.com',
-      'client_id' => '100459812085611549381',
+      'client_email' => ENV['LC_CLIENT_EMAIL'],
+      'client_id' => ENV['LC_CLIENT_ID'],
       'auth_uri' => 'https://accounts.google.com/o/oauth2/auth',
       'token_uri' => 'https://accounts.google.com/o/oauth2/token',
       'auth_provider_x509_cert_url' => 'https://www.googleapis.com/oauth2/v1/certs',
-      'client_x509_cert_url' => 'https://www.googleapis.com/robot/v1/metadata/x509/lc-docs-service%40lc-docs-development.iam.gserviceaccount.com'
+      'client_x509_cert_url' => ENV['LC_CERT_URL']
     }.freeze
 
     # Use the generated client_secret.json file to authenticate the Google Drive service object.
